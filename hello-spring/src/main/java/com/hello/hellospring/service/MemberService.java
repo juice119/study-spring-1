@@ -3,16 +3,20 @@ package com.hello.hellospring.service;
 import com.hello.hellospring.domain.Member;
 import com.hello.hellospring.repository.MemberRepository;
 import com.hello.hellospring.repository.MemoryMemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class MemberService {
 
     private MemberRepository memberRepository;
 
-    public MemberService(MemberRepository memberRepository) {
-        this.memberRepository = new MemoryMemberRepository();
+    @Autowired
+    public MemberService(MemoryMemberRepository memoryMemberRepository) {
+        this.memberRepository = memoryMemberRepository;
     }
 
     /**
