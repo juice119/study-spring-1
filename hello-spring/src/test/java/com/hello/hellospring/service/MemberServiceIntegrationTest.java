@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,7 +21,7 @@ class MemberServiceIntegrationTest {
     @Autowired MemberRepository memberRepository;
 
     @Test
-    void 회원가입() throws Exception {
+    void 회원가입() {
         //given
         Member member1 = new Member();
         member1.setName("spring");
@@ -54,6 +55,7 @@ class MemberServiceIntegrationTest {
     @Test
     void 사용자리스트() {
         // given
+        int initSize = memberService.findMembers().size();
         Member member1 = new Member();
         member1.setName("hello1");
 
@@ -64,13 +66,22 @@ class MemberServiceIntegrationTest {
         memberService.join(member1);
         memberService.join(member2);
         List<Member> members = memberService.findMembers();
+
+        // then
+        assertThat(members.size()).isEqualTo(initSize + 2);
     }
 
     @Test
     void findOne() {
-    }
+        // given
+        Member member1 = new Member();
+        member1.setName("hello1");
 
-    //given
-    //when
-    //then
+        // when
+        Long id = memberService.join(member1);
+        Optional<Member> one = memberService.findOne(id);
+
+        // then
+        assertThat(one.get().getName()).isEqualTo("hello1");
+    }
 }
